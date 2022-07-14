@@ -1,6 +1,7 @@
 let gridContainer = document.getElementById('grid-container');
 const gameMode = document.getElementById('game-mode');
 const playBtn = document.getElementById('play-btn');
+const counter = document.getElementById('counter');
 
 let gridSelection;
 
@@ -8,13 +9,29 @@ let randomUniqueNumberList = [];
 const maxEndElement = 16;
 let gridArrrayList = [];
 
+let winTxt = document.getElementById('win-text');
+let winImg = document.getElementById('you-win');
+let loseTxt = document.getElementById('lose-text');
+let loseImg = document.getElementById('you-lose');
+let counterLive = document.getElementById('result');
+
+const counterResult = [];
+let maxResult = [0];
+let resultVerify = false;
+
 playBtn.addEventListener('click', 
 function() {
     if (gameMode.value == ''){
         alert('Scegli la difficoltà di gioco.');
     } else {
         randomUniqueNumberList = [];
+        gridArrrayList = [];
         gridContainer.innerHTML = '';
+        let clickCounter = 0;
+        winTxt.style.display = 'none';
+        winImg.style.display = 'none';
+        loseTxt.style.display = 'none';
+        loseImg.style.display = 'none';
 
         gridSelection = gameMode.value;
 
@@ -28,58 +45,74 @@ function() {
             gridContainer.append(grid);
 
             gridArrrayList.push(grid);
-        
+
+            let toogleVerify = false;
+
+            for (let i = 0; i < randomUniqueNumberList.length; i++) {
+                if (gridNumber == randomUniqueNumberList[i]) {
+                    for (let n = 0; n < gridArrrayList.length; n++) {
+                        
+                        if (n == (randomUniqueNumberList[i] - 1)) {
+                            gridArrrayList[n].classList.add('grid-no-show');
+                        }
+                    }
+                    toogleVerify = true;
+                }
+            }
+
             grid.addEventListener('click', 
             function() {
                 console.log(gridNumber)
 
-                let toogleVerify = false;
-
                 this.classList.toggle('grid-sec');
 
-                for (let i = 0; i < randomUniqueNumberList.length; i++) {
-                    if (gridNumber == randomUniqueNumberList[i]) {
+                if (grid.classList.contains('grid-sec')) {
+                    clickCounter++;
+                } else if (!grid.classList.contains('grid-sec')) {
+                    clickCounter--;
+                }
 
-                        let arrayVerify = false;
-                        
-                        for (let n = 0; n < gridArrrayList.length; n++) {
+                counterLive.innerHTML = clickCounter;
 
-                            /*
-                            if (gridArrrayList.includes(randomUniqueNumberList[i])) {
-                                arrayVerify = true;
-                            }
-                            while (arrayVerify == true) {
-                                gridArrrayList[n].classList.add('grid-end');
-                        
-                                if (!gridArrrayList.includes(randomUniqueNumberList[i])) {
-                                    arrayVerify = false;
-                                }
-                            }
-                            */
+                if (toogleVerify == true) {
+                    for (let n = 0; n < gridArrrayList.length; n++) {
+                        if (gridArrrayList[n].classList.contains('grid-no-show')) {
+                            gridArrrayList[n].classList.add('grid-end');
+                        }
+                    }
 
-                            
-                            if (n == (randomUniqueNumberList[i] - 1)) {
-                                //arrayVerify = true;
+                    counterLive.innerHTML = (clickCounter - 1);
 
-                                gridArrrayList[n].classList.add('grid-end');
+                    setTimeout(function() {
+                        alert('Hai perso, gioca ancora.');
 
-                                console.log(arrayVerify)
-                                console.log(n)
+                        counter.innerHTML += `<p>${clickCounter - 1}</p>`;
+                        counterLive.innerHTML = '';
+                        counterResult.push(clickCounter - 1);
+                        gameMode.value = '';
+                        gridContainer.innerHTML = `<p>Scegli la difficoltà e gioca!</p>`;
+
+                        for (let z = 0; z < counterResult.length; z++) {
+                            if (counterResult[z] > maxResult) {
+                                maxResult = counterResult[z];
+                                resultVerify = true;
+                            } else if (counterResult[z] <= maxResult) {
+                                resultVerify = false;
                             }
                         }
 
-                        toogleVerify = true;
-                    }
+                        if (resultVerify == true) {
+                            winTxt.style.display = 'block';
+                            winImg.style.display = 'block';
+                        } else if ((resultVerify == false)) {
+                            loseTxt.style.display = 'block';
+                            loseImg.style.display = 'block';
+                        }
+                    }, 1);
+
+                    
+
                 }
-
-                
-                
-                
-
-                if (toogleVerify == true) {
-                    alert('Hai perso.');
-                }
-
             });
         }
     
