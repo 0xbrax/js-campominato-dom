@@ -40,3 +40,42 @@ function() {
         }
     }
 });
+
+
+
+let numberList = [];
+let numberEndGame;
+let numberVerify = false;
+
+for (let list = 0; list < 16; list++) {
+    numberEndGame = randomNumber(1, 16);
+
+    if (numberList.includes(numberEndGame)) {
+        numberVerify = true;
+    }
+
+    while (numberVerify == true) {
+        numberEndGame = randomNumber(1, 16);
+
+        if (!numberList.includes(numberEndGame)) {
+            numberVerify = false;
+        }
+    }
+
+    numberVerify = false;
+
+    numberList.push(numberEndGame);
+}
+
+console.log(numberList)
+
+
+
+
+
+
+function randomNumber(min, max) {
+    const number = Math.floor(Math.random() * (max - min + 1) + min);
+
+    return number;
+}
