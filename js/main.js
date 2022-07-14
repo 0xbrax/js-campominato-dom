@@ -6,6 +6,7 @@ let gridSelection;
 
 let randomUniqueNumberList = [];
 const maxEndElement = 16;
+let gridArrrayList = [];
 
 playBtn.addEventListener('click', 
 function() {
@@ -25,6 +26,8 @@ function() {
             grid.append(gridNumber);
             grid.classList.add('grid-main');
             gridContainer.append(grid);
+
+            gridArrrayList.push(grid);
         
             grid.addEventListener('click', 
             function() {
@@ -36,18 +39,45 @@ function() {
 
                 for (let i = 0; i < randomUniqueNumberList.length; i++) {
                     if (gridNumber == randomUniqueNumberList[i]) {
-                        toogleVerify = true;
 
-                        console.log(toogleVerify)
-                    //grid.classList.add('grid-end');
+                        let arrayVerify = false;
+                        
+                        for (let n = 0; n < gridArrrayList.length; n++) {
+
+                            /*
+                            if (gridArrrayList.includes(randomUniqueNumberList[i])) {
+                                arrayVerify = true;
+                            }
+                            while (arrayVerify == true) {
+                                gridArrrayList[n].classList.add('grid-end');
+                        
+                                if (!gridArrrayList.includes(randomUniqueNumberList[i])) {
+                                    arrayVerify = false;
+                                }
+                            }
+                            */
+
+                            
+                            if (n == (randomUniqueNumberList[i] - 1)) {
+                                //arrayVerify = true;
+
+                                gridArrrayList[n].classList.add('grid-end');
+
+                                console.log(arrayVerify)
+                                console.log(n)
+                            }
+                        }
+
+                        toogleVerify = true;
                     }
                 }
+
+                
+                
                 
 
                 if (toogleVerify == true) {
                     alert('Hai perso.');
-
-                    
                 }
 
             });
