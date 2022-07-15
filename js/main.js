@@ -71,13 +71,31 @@ function() {
             function() {
                 this.classList.toggle('grid-sec');
 
+                let multiplier = 0;
                 if (grid.classList.contains('grid-sec')) {
                     clickCounter++;
+                    if (gameMode.value == '1') {
+                        multiplier = clickCounter * 1;
+                    } else if (gameMode.value == '2') {
+                        multiplier = clickCounter * 2;
+                    } else if (gameMode.value == '3') {
+                        multiplier = clickCounter * 3;
+                    } else if (gameMode.value == '4') {
+                        multiplier = clickCounter * 5;
+                    }
                 } else if (!grid.classList.contains('grid-sec')) {
                     clickCounter--;
+                    if (gameMode.value == '1') {
+                        multiplier = clickCounter * 1;
+                    } else if (gameMode.value == '2') {
+                        multiplier = clickCounter * 2;
+                    } else if (gameMode.value == '3') {
+                        multiplier = clickCounter * 3;
+                    } else if (gameMode.value == '4') {
+                        multiplier = clickCounter * 5;
+                    }
                 }
-
-                counterLive.innerHTML = clickCounter;
+                counterLive.innerHTML = multiplier;
 
                 if (toogleVerify == true) {
                     for (let i = 0; i < randomUniqueNumberList.length; i++) {
@@ -86,14 +104,24 @@ function() {
                         }
                     }
 
-                    counterLive.innerHTML = (clickCounter - 1);
+                    let counterResultMod;
+                    if (gameMode.value == '1') {
+                        counterResultMod = multiplier - 1;
+                    } else if (gameMode.value == '2') {
+                        counterResultMod = multiplier - 2;
+                    } else if (gameMode.value == '3') {
+                        counterResultMod = multiplier - 3;
+                    } else if (gameMode.value == '4') {
+                        counterResultMod = multiplier - 5;
+                    }
+                    counterLive.innerHTML = `<p>${counterResultMod}</p>`;
 
                     setTimeout(function() {
                         alert('Gioca ancora.');
 
-                        counter.innerHTML += `<p>${clickCounter - 1}</p>`;
+                        counter.innerHTML += `<p>${counterResultMod}</p>`;
                         counterLive.innerHTML = '';
-                        counterResult.push(clickCounter - 1);
+                        counterResult.push(counterResultMod);
                         gameMode.value = '';
                         gridContainer.innerHTML = `<p>Scegli la difficoltà e gioca!</p>`;
 
@@ -129,7 +157,7 @@ function() {
             gridMain[gridList].style.height = gridSizeFinal;
         }
 
-        console.log(randomUniqueNumberList)
+        //console.log(randomUniqueNumberList)
     }
 });
 
