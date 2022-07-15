@@ -1,10 +1,9 @@
 let gridContainer = document.getElementById('grid-container');
-const gameMode = document.getElementById('game-mode');
+let gameMode = document.getElementById('game-mode');
 const playBtn = document.getElementById('play-btn');
 const counter = document.getElementById('counter');
 
 let gridSelection;
-
 let randomUniqueNumberList = [];
 const maxEndElement = 16;
 let gridArrrayList = [];
@@ -16,11 +15,27 @@ let loseImg = document.getElementById('you-lose');
 let counterLive = document.getElementById('result');
 
 const counterResult = [];
-let maxResult = [0];
+let maxResult = [];
 let resultVerify = false;
 
 playBtn.addEventListener('click', 
 function() {
+    switch (parseInt(gameMode.value)) {
+        case 1:
+        default:
+            gridSelection = 100;
+            break;
+        case 2:
+            gridSelection = 81;
+            break;
+        case 3:
+            gridSelection = 64;
+            break;
+        case 4:
+            gridSelection = 49;
+            break;
+    }
+
     if (gameMode.value == ''){
         alert('Scegli la difficoltà di gioco.');
     } else {
@@ -32,8 +47,6 @@ function() {
         winImg.style.display = 'none';
         loseTxt.style.display = 'none';
         loseImg.style.display = 'none';
-
-        gridSelection = gameMode.value;
 
         randomUniqueNumber(maxEndElement, 1, gridSelection);
     
@@ -50,20 +63,12 @@ function() {
 
             for (let i = 0; i < randomUniqueNumberList.length; i++) {
                 if (gridNumber == randomUniqueNumberList[i]) {
-                    for (let n = 0; n < gridArrrayList.length; n++) {
-                        
-                        if (n == (randomUniqueNumberList[i] - 1)) {
-                            gridArrrayList[n].classList.add('grid-no-show');
-                        }
-                    }
                     toogleVerify = true;
                 }
             }
 
             grid.addEventListener('click', 
             function() {
-                console.log(gridNumber)
-
                 this.classList.toggle('grid-sec');
 
                 if (grid.classList.contains('grid-sec')) {
@@ -75,16 +80,16 @@ function() {
                 counterLive.innerHTML = clickCounter;
 
                 if (toogleVerify == true) {
-                    for (let n = 0; n < gridArrrayList.length; n++) {
-                        if (gridArrrayList[n].classList.contains('grid-no-show')) {
-                            gridArrrayList[n].classList.add('grid-end');
+                    for (let i = 0; i < randomUniqueNumberList.length; i++) {
+                        for (let n = 0; n < gridArrrayList.length; n++) {
+                            gridArrrayList[randomUniqueNumberList[i] - 1].classList.add('grid-end');
                         }
                     }
 
                     counterLive.innerHTML = (clickCounter - 1);
 
                     setTimeout(function() {
-                        alert('Hai perso, gioca ancora.');
+                        alert('Gioca ancora.');
 
                         counter.innerHTML += `<p>${clickCounter - 1}</p>`;
                         counterLive.innerHTML = '';
@@ -109,9 +114,6 @@ function() {
                             loseImg.style.display = 'block';
                         }
                     }, 1);
-
-                    
-
                 }
             });
         }
@@ -139,21 +141,21 @@ function randomUniqueNumber(maxEndElement, min, max) {
 
     for (let list = 0; list < maxEndElement; list++) {
         numberEndGame = randomNumber(min, max);
-    
+        
         if (randomUniqueNumberList.includes(numberEndGame)) {
             numberVerify = true;
         }
-    
+        
         while (numberVerify == true) {
             numberEndGame = randomNumber(min, max);
-    
+
             if (!randomUniqueNumberList.includes(numberEndGame)) {
                 numberVerify = false;
             }
         }
-    
+        
         randomUniqueNumberList.push(numberEndGame);
-    }
+        }
 }
 
 function randomNumber(min, max) {
